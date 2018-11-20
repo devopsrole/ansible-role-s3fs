@@ -1,10 +1,7 @@
 ---
 ---
-<<<<<<< HEAD
 - hosts: localhost
-=======
 - hosts: phonethingee
->>>>>>> master
   roles:
     - role: ../roles/s3fs
       s3fs:
