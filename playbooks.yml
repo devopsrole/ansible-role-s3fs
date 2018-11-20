@@ -1,7 +1,6 @@
 ---
 ---
 - hosts: localhost
-- hosts: phonethingee
   roles:
     - role: ../roles/s3fs
       s3fs:
