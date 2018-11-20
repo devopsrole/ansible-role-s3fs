@@ -1,11 +1,10 @@
 ---
 - name: Make sure s3fs dependencies are present
   become: yes
-  apt:
+  yum:
     name: "{{ item }}"
     state: present
     update_cache: yes
-    cache_valid_time: 86400
   with_items: "{{ s3fs.dependencies }}"
 
 - name: Download s3fs source
