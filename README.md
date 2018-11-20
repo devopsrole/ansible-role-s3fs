@@ -6,7 +6,11 @@ Ansible Role that installs and configure s3fs on Redhat/CentOS 7. Aditionally, i
 # Play
 ```site.yaml
 ---
+<<<<<<< HEAD
 - hosts: localhost
+=======
+- hosts: phonethingee
+>>>>>>> master
   roles:
     - role: ../roles/s3fs
       s3fs:
