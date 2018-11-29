@@ -29,7 +29,7 @@
 
 - name: Add s3fs to run levels
   become: yes
-  command: "update-rc.d s3fs defaults"
+  command: "systemctl enable s3fs"
   changed_when: False
 
 - name: Make sure mountpoints are present in fstab
