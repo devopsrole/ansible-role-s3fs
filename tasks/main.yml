@@ -3,4 +3,10 @@
   tags: vars
 
 - include: setup.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution_version == '7'
+- include: setup69.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution_version == '6.9'
 - include: mount.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution_version == '7'
+- include: mount69.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution_version == '6.9'

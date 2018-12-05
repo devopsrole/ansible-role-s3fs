@@ -1,0 +1,77 @@
+---
+
+- name: create dirs
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /opt/fuse
+    - /opt/s3fs
+
+- name: get fuse 
+  unarchive:
+    src: https://src.fedoraproject.org/lookaside/pkgs/fuse/fuse-2.9.2.tar.gz/7d80d0dc9cc2b9199a0c53787c151205/fuse-2.9.2.tar.gz
+    dest: /opt/fuse
+    remote_src: yes
+    extra_opts: [--strip-components=1]
+
+- name: configure
+  command: ./configure --prefix=/usr
+  args:
+    chdir: /opt/fuse/
+
+- name: make fuse
+  make:
+    chdir: /opt/fuse
+
+- name: make install fuse
+  make:
+    chdir: /opt/fuse
+    target: install
+
+- name: modprobe
+  shell: export PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/lib64/pkgconfig/; ldconfig; modprobe fuse;
+
+
+- name: get s3fs
+  unarchive:
+    src: https://src.fedoraproject.org/lookaside/pkgs/fuse/fuse-2.9.2.tar.gz/7d80d0dc9cc2b9199a0c53787c151205/fuse-2.9.2.tar.gz
+    dest: /opt/s3fs
+    remote_src: yes
+    extra_opts: [--strip-components=1]
+
+
+- name: configure
+  command: ./configure --prefix=/usr
+  args:
+    chdir: /opt/s3fs/
+
+- name: make s3fs
+  make:
+    chdir: /opt/s3fs
+
+- name: make install s3fs
+  make:
+    chdir: /opt/s3fs
+    target: install
+
+- name: copy fuse.conf
+  copy:
+    src: files/fuse.conf
+    dest: /etc/fuse.conf
+
+- name: Add read permission to other users
+  become: yes
+  file:
+    path: /etc/fuse.conf
+    state: file
+    mode: "o=r"
+
+- name: Allow non-root users to specify the allow_other or allow_root mount options
+  become: yes
+  lineinfile:
+    dest: "/etc/fuse.conf"
+    regexp: "^#user_allow_other$"
+    line: "user_allow_other"
+    state: present
+    backrefs: yes

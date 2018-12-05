@@ -1,4 +1,5 @@
 ---
+
 - name: Make sure s3fs dependencies are present
   become: yes
   yum:
